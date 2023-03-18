@@ -17,6 +17,7 @@ JOIN texts t ON t.email_id=e.email_id
 WHERE t.action_date = (e.signup_date + interval '1 days') AND 
       t.signup_action = 'Confirmed'
       
+      
  -- Solution 2
  
 SELECT user_id FROM emails
@@ -25,3 +26,13 @@ texts
 on emails.email_id = texts.email_id 
 where signup_action = 'Confirmed' and 
       cast(action_date as date) = cast(signup_date as date) + 1
+
+
+-- Solution 3
+
+SELECT e.user_id
+FROM emails e
+INNER JOIN texts t ON e.email_id = t.email_id
+WHERE t.signup_action = 'Confirmed'
+  AND DATE(t.action_date) = DATE(e.signup_date) + INTERVAL '1 DAYS'
+
